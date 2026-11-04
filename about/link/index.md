@@ -5,5 +5,5 @@
 ---
 
 > Author: [AZ](https://github.com/0make)  
-> URL: http://localhost:1313/about/link/  
+> URL: https://0make.github.io/about/link/  
 

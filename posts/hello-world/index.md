@@ -3,6 +3,8 @@
 
 Welcome to here, this is my first post.
 
+{{< model3d src="/model3d/Knife.glb" back_light="false" ratio="1.0" grid="false" >}}
+
 <!--more-->
 
 ## Documentation
@@ -18,5 +20,5 @@ Whether it's questions, ideas, bugs or pull requests, all feedback is welcome!
 ---
 
 > Author: [AZ](https://github.com/0make)  
-> URL: http://localhost:1313/posts/hello-world/  
+> URL: https://0make.github.io/posts/hello-world/  
 

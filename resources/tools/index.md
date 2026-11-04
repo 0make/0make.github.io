@@ -7,5 +7,5 @@
 ---
 
 > Author: [AZ](https://github.com/0make)  
-> URL: http://localhost:1313/resources/tools/  
+> URL: https://0make.github.io/resources/tools/  
 
