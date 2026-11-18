@@ -195,10 +195,10 @@
 
 ## 联系方式
 
-- 📧 Email: your-email@example.com
+- 📧 Email: 0make(at)gmail.com
 - 💻 GitHub: [@0make](https://github.com/0make)
 - 🌐 个人网站: https://0make.top
-- 📱 社交媒体: [Twitter](https://twitter.com/yourusername)
+- 📱 社交媒体: [tiktok](https://tiktok.com/@alanzheng558)
 
 ---
 
