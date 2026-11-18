@@ -177,6 +177,9 @@
 - Python + FastAPI
 - Go
 - RESTful API 设计
+- C++
+- C#
+- Qt
 
 ### 数据库
 
