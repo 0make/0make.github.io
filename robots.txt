@@ -97,4 +97,4 @@ Disallow: /
 User-agent: ClaudeBot
 Disallow: /
 
-Sitemap: https://0make.github.io/sitemap.xml
+Sitemap: https://0make.top/sitemap.xml

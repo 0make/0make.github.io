@@ -1,7 +1,7 @@
-# Hello World
+# Show 3D Model on Webpage
 
 
-Welcome to here, this is my first post.
+developing and testing show 3D model by threejs on webpage
 
 {{< model3d src="/model3d/Knife.glb" back_light="false" ratio="1.0" grid="false" >}}
 
@@ -20,5 +20,5 @@ Whether it's questions, ideas, bugs or pull requests, all feedback is welcome!
 ---
 
 > Author: [AZ](https://github.com/0make)  
-> URL: https://0make.github.io/posts/hello-world/  
+> URL: https://0make.top/posts/hello-world/  
 
