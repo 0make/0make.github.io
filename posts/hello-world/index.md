@@ -1,7 +1,7 @@
 # Show 3D Model on Webpage
 
 
-developing and testing show 3D model by threejs on webpage
+showing 3D model by threejs on webpage
 
 {{< model3d src="/model3d/Knife.glb" back_light="false" ratio="1.0" grid="false" >}}
 
