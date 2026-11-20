@@ -1,376 +1,376 @@
-# 定个蛋AI算法设计：融合组合优化与多智能体强化学习的创新方案
+# Ding Ge Dan AI Algorithm Design: An Innovative Approach Combining Combinatorial Optimization and Multi-Agent Reinforcement Learning
 
 
-# 定个蛋AI算法设计：融合组合优化与多智能体强化学习的创新方案
+# Ding Ge Dan AI Algorithm Design: An Innovative Approach Combining Combinatorial Optimization and Multi-Agent Reinforcement Learning
 
-## 引言
+## Introduction
 
-"定个蛋"是流行于山西繁峙地区的一种极具特色的地方扑克游戏。虽然也是4人、两副牌（108张）、2v2对抗，但其独特的"换牌机制"和"反直觉的牌型大小"使其与掼蛋、斗地主等游戏有着天壤之别。
+"Ding Ge Dan" is a highly distinctive local poker game popular in the Fanshi region of Shanxi Province. Although it also involves 4 players, two decks (108 cards), and 2v2 competition, its unique "card exchange mechanism" and "counter-intuitive card rankings" make it fundamentally different from games like Guandan and Dou Dizhu.
 
-本文将详细介绍为"定个蛋"量身定制的AI算法方案，该方案融合了组合优化、多智能体强化学习和蒙特卡洛树搜索等多种先进技术。
+This article provides a detailed introduction to the AI algorithm solution specifically designed for "Ding Ge Dan", which integrates various advanced technologies including combinatorial optimization, multi-agent reinforcement learning, and Monte Carlo Tree Search.
 
 <!--more-->
 
-## 游戏规则概述
+## Game Rules Overview
 
-### 基础配置
+### Basic Configuration
 
-- **游戏人数**：4人，两两一队（对家为队友）
-- **使用牌数**：两副普通扑克牌，共108张
-- **发牌**：每人初始分发27张牌
-- **游戏目标**：以队伍为单位，尽快将手中的牌全部出完
+- **Number of Players**: 4 players, forming two teams (partners sit opposite each other)
+- **Cards Used**: Two standard decks of playing cards, totaling 108 cards
+- **Dealing**: Each player initially receives 27 cards
+- **Game Objective**: As a team, be the first to play all cards from your hand
 
-### 核心特色：换牌玩法
+### Core Feature: Card Exchange Mechanism
 
-这是"定个蛋"区别于所有其他扑克游戏的最独特规则。数字"4"在游戏中充当"特殊兑换筹码"。
+This is the most unique rule that distinguishes "Ding Ge Dan" from all other poker games. The number "4" serves as a "special exchange token" in the game.
 
-**触发条件**：当玩家手中有2张及以上的数字4时，可以发起换牌。
+**Trigger Condition**: When a player has 2 or more cards with the number 4, they can initiate a card exchange.
 
-**换牌对象**：只能换取上家（且不能是同队队友）刚刚打出的牌型。
+**Exchange Target**: Can only exchange for the card combination just played by the previous player (and cannot be a teammate).
 
-**换牌公式**：用N张4，可以换取N+1张的同类型牌型（大小王无法被换取）。
+**Exchange Formula**: Using N cards of 4, you can exchange for N+1 cards of the same type (Jokers cannot be exchanged).
 
-**具体举例**：
+**Specific Examples**:
 
-- **单张4**：不可兑换
-- **2张4（44）**：可兑换上家打出的任意3张的牌型（如三张K）。换取成功后，变为我方打出"44"，并获得出牌权
-- **3张4（444）**：可兑换上家打出的任意4张的牌型（如四条A）。换取成功后，变为我方打出"444"，并获得出牌权
+- **Single 4**: Cannot be exchanged
+- **Two 4s (44)**: Can exchange for any 3-card combination played by the previous player (e.g., three Kings). After successful exchange, you play "44" and gain the right to play
+- **Three 4s (444)**: Can exchange for any 4-card combination played by the previous player (e.g., four Aces). After successful exchange, you play "444" and gain the right to play
 
-**战术意义**：允许玩家优化手牌，将原本零散、无法出掉的废牌，通过"4"转化为强力的炸弹或关键牌型，实现"以小博大"和"截胡"。
+**Tactical Significance**: Allows players to optimize their hands by converting scattered, unplayable cards into powerful bombs or key combinations through "4"s, achieving "small bets for big gains" and "interceptions".
 
-### 牌型与大小规则
+### Card Combinations and Ranking Rules
 
-"定个蛋"的牌型大小有许多反直觉的设定，需特别注意：
+"Ding Ge Dan" has many counter-intuitive settings for card combination rankings that require special attention:
 
-**基本大小顺序**：大王 > 小王 > 3 > 2 > A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4
+**Basic Ranking Order**: Big Joker > Small Joker > 3 > 2 > A > K > Q > J > 10 > 9 > 8 > 7 > 6 > 5 > 4
 
-> **注意**：3是最大的数字牌！
+> **Note**: 3 is the largest numbered card!
 
-**出牌限制**：不能带牌（即没有三带一、四带二等规则），必须打出纯牌型。
+**Playing Restrictions**: No accompanying cards allowed (i.e., no rules like "three with one" or "four with two"), must play pure combinations only.
 
-**常规牌型**：
+**Standard Combinations**:
 
-- 单张、对子
-- 顺子：必须3张及以上连续牌才能出
-- 三连对：必须是对子且连续（如33-44-55）才能出
+- Single cards, pairs
+- Straights: Must be 3 or more consecutive cards to play
+- Triple Pairs: Must be consecutive pairs (e.g., 33-44-55) to play
 
-**炸弹分级体系（核心压制关系）**：
+**Bomb Hierarchy System (Core Suppression Relationship)**:
 
-1. **三条炸弹**：3张相同数字的牌。属于"小炸弹"，不可以压三连对，但可以压比它小的单张、对子等
-2. **四条炸弹（浑）**：4张相同数字的牌。大于三条炸弹，可以压大小王和连对，也可压单张、对子、三条、任意长度顺子或飞机
-3. **王炸**：分为双王炸、三王炸及四王炸。其内部大小顺序为：双大王 > 大小王（一大一小） > 双小王
-4. **连弹（三连炸）**：3组连续的炸弹组合（如333-444-555或4444-5555-6666）。这是游戏中的顶级牌型，能压制普通炸弹及双王炸
+1. **Triple Bomb**: 3 cards of the same number. Classified as a "small bomb", cannot suppress triple pairs, but can suppress smaller singles, pairs, etc.
+2. **Quadruple Bomb (Hun)**: 4 cards of the same number. Greater than triple bombs, can suppress Jokers and consecutive pairs, as well as singles, pairs, triples, straights of any length, or airplanes
+3. **Joker Bomb**: Divided into double Joker bombs, triple Joker bombs, and quadruple Joker bombs. Internal ranking: Double Big Jokers > Mixed Jokers (one big, one small) > Double Small Jokers
+4. **Consecutive Bombs (Triple Bomb Chain)**: 3 groups of consecutive bomb combinations (e.g., 333-444-555 or 4444-5555-6666). This is the top-tier combination in the game, capable of suppressing ordinary bombs and double Joker bombs
 
-> **重要提示**：这也是为什么"四王炸并非最大"的原因！
+> **Important Note**: This is why "quadruple Joker bombs are not the strongest"!
 
-### 特殊规则与胜负判定
+### Special Rules and Win/Loss Determination
 
-**可接风**：当一方玩家出完手中的最后一手牌，且该手牌没有人能压（或选择不要）时，出牌权直接转移给其队友，由队友"接风"继续出牌。
+**Wind Catching**: When a player plays their last combination and no one can beat it (or chooses not to), the playing right transfers directly to their partner, who "catches the wind" and continues playing.
 
-**胜负算法**（假设AB为一队，CD为一队）：
+**Winning Algorithm** (assuming AB is one team, CD is the other):
 
-- **双扣（抓两家）**：A第1名，B第2名。AB方大获全胜，得2倍基础分
-- **单扣（抓一家）**：A第1名，C(敌)第2名，B第3名。AB方获胜，得1倍基础分
-- **平局（和局）**：A第1名，C(敌)第2名，D(敌)第3名。双方打平，得0倍基础分
-- **逃跑惩罚**：若玩家中途退出，将扣除12倍基础分
+- **Double Capture (Catch Both)**: A finishes 1st, B finishes 2nd. Team AB achieves complete victory, earning 2x base points
+- **Single Capture (Catch One)**: A finishes 1st, C (opponent) finishes 2nd, B finishes 3rd. Team AB wins, earning 1x base points
+- **Draw**: A finishes 1st, C (opponent) finishes 2nd, D (opponent) finishes 3rd. Both teams tie, earning 0x base points
+- **Escape Penalty**: If a player quits mid-game, they lose 12x base points
 
-## AI算法架构设计
+## AI Algorithm Architecture Design
 
-### 1. 前置核心：启发式换牌优化算法
+### 1. Pre-Core: Heuristic Card Exchange Optimization Algorithm
 
-这是"定个蛋"AI区别于其他所有扑克AI的第一步。在每次出牌前，AI必须先决定"要不要换牌"以及"怎么换"。
+This is the first step that distinguishes "Ding Ge Dan" AI from all other poker AIs. Before each play, the AI must decide "whether to exchange cards" and "how to exchange".
 
-#### 算法选择
+#### Algorithm Selection
 
-采用动态规划或整数线性规划结合贪心策略。这些算法能够在复杂的选择空间中找到最优解，特别适合处理"定个蛋"中"4"这种特殊资源的分配问题。
+Adopts dynamic programming or integer linear programming combined with greedy strategies. These algorithms can find optimal solutions in complex choice spaces, particularly suitable for handling the allocation of special resources like "4"s in "Ding Ge Dan".
 
-#### 核心作用
+#### Core Function
 
-将手中的"4"视为一种"万能资源"。AI需要实时计算：用这些"4"去补全当前的散牌凑成炸弹，还是保留"4"作为后续的控制牌收益最大？这是一个典型的背包问题变种，需要在毫秒级内求出局部最优解，然后再将优化后的手牌送入决策网络。
+Treats the "4"s in hand as a "universal resource". The AI needs to calculate in real-time: whether using these "4"s to complete scattered cards into bombs, or retaining them as control cards for future use yields greater benefit? This is a variant of the classic knapsack problem, requiring local optimal solutions within milliseconds before feeding the optimized hand into the decision network.
 
-这个优化器的关键在于平衡短期利益和长期战略。有时候立即换牌能获得当前回合的优势，但保留"4"可能在后续关键时刻发挥更大作用。算法需要综合考虑当前手牌结构、对手可能的牌型、队友的状态等多个因素，做出全局最优的决策。
+The key to this optimizer lies in balancing short-term benefits and long-term strategy. Sometimes immediate card exchange can gain advantage in the current round, but retaining "4"s might play a more significant role in critical moments later. The algorithm needs to comprehensively consider multiple factors including current hand structure, opponents' possible combinations, teammates' status, and more, to make globally optimal decisions.
 
-#### 工作原理
+#### Working Principle
 
-优化器会遍历所有可能的换牌方案，评估每种方案对手牌整体实力的提升程度。它会考虑换牌后能否形成更强的炸弹、是否能消除手牌中的弱点、是否会影响后续的出牌灵活性等因素。通过动态规划的方法，可以避免重复计算，大大提高求解效率。
+The optimizer traverses all possible exchange scenarios, evaluating how much each scenario improves the overall strength of the hand. It considers whether exchanges can form stronger bombs, eliminate weaknesses in the hand, affect subsequent playing flexibility, and other factors. Through dynamic programming methods, it avoids redundant calculations, significantly improving solution efficiency.
 
-### 2. 决策大脑：多智能体强化学习
+### 2. Decision Brain: Multi-Agent Reinforcement Learning
 
-因为是2v2游戏，AI必须学会与队友配合（如挡牌、喂牌、送队友走）。这不是简单的单人决策问题，而是需要多个智能体协同工作的复杂系统。
+Since this is a 2v2 game, the AI must learn to cooperate with teammates (such as blocking, feeding cards, helping teammates finish). This is not a simple single-player decision problem, but a complex system requiring coordination among multiple agents.
 
-#### 算法选择
+#### Algorithm Selection
 
-采用MAPPO（多智能体近端策略优化）或QMIX算法，这两种算法都采用了CTDE（集中训练，分布式执行）架构。这种架构允许在训练阶段利用全局信息进行学习，而在实际执行时每个智能体只需要根据局部信息做出决策，非常适合"定个蛋"这种不完全信息的博弈场景。
+Adopts MAPPO (Multi-Agent Proximal Policy Optimization) or QMIX algorithms, both utilizing CTDE (Centralized Training with Decentralized Execution) architecture. This architecture allows learning with global information during training, while each agent only needs to make decisions based on local information during execution, making it very suitable for incomplete information game scenarios like "Ding Ge Dan".
 
-#### 状态输入设计
+#### State Input Design
 
-除了常规的手牌和出牌历史，状态向量中必须单独编码以下关键信息：
+In addition to regular hand cards and play history, the state vector must separately encode the following key information:
 
-- 当前玩家及队友手中"4"的数量
-- 换牌潜力值（基于手牌结构计算的潜在换牌能力）
-- 剩余牌数分布
-- 已出牌历史记录
-- 当前轮次的出牌要求
+- Number of "4"s held by current player and teammate
+- Exchange potential value (calculated based on hand structure)
+- Remaining card distribution
+- Play history record
+- Current round's playing requirements
 
-这些特征的设计直接影响了AI对局势的理解能力。特别是"4"的数量和换牌潜力，这是"定个蛋"独有的关键信息，必须在状态表示中得到充分体现。
+The design of these features directly affects the AI's understanding of the game situation. Particularly the quantity of "4"s and exchange potential, which are unique key information in "Ding Ge Dan", must be fully reflected in the state representation.
 
-#### 动作空间设计
+#### Action Space Design
 
-动作空间不仅包含"出什么牌"，还必须包含"执行换牌操作"的特殊动作。这意味着AI的决策维度比传统扑克游戏更加复杂。AI通过千万次的自我博弈，会自动学会类似人类的"牌语"，例如当队友剩少量牌时，故意不换牌而打出小单张，暗示队友接管牌权。
+The action space not only includes "what cards to play", but must also include special actions for "executing card exchanges". This means the AI's decision dimensions are more complex than traditional poker games. Through millions of self-play games, the AI automatically learns human-like "card language", such as when a teammate has few cards remaining, deliberately not exchanging and playing small singles to signal the teammate to take control.
 
-这种隐式通信能力的学习是多智能体系统的一大亮点。AI不需要显式的通信协议，而是通过出牌模式来传递信息，这与人类高手的思维方式非常相似。
+Learning this implicit communication capability is a highlight of multi-agent systems. The AI doesn't need explicit communication protocols, but conveys information through playing patterns, which is very similar to how expert human players think.
 
-#### 奖励函数设计
+#### Reward Function Design
 
-奖励函数的设计需要考虑多个维度：
+The reward function design needs to consider multiple dimensions:
 
-- **基础得分**：成功出牌获得正向奖励
-- **换牌奖励**：成功换牌并获得优势时给予额外奖励
-- **团队协作奖励**：当出牌帮助到队友时给予奖励
-- **惩罚机制**：错误换牌或浪费"4"时给予负奖励
-- **胜利奖励**：团队获胜时给予大额奖励
-- **失败惩罚**：团队失败时给予惩罚
+- **Base Score**: Positive reward for successfully playing cards
+- **Exchange Reward**: Additional reward for successful exchanges that gain advantage
+- **Team Collaboration Reward**: Reward when plays help teammates
+- **Penalty Mechanism**: Negative reward for incorrect exchanges or wasting "4"s
+- **Victory Reward**: Large reward for team victory
+- **Defeat Penalty**: Penalty for team defeat
 
-奖励函数的精心设计是强化学习成功的关键。它需要准确反映游戏的真实目标，同时引导AI学习到正确的策略。特别是在"定个蛋"中，如何平衡个人利益和团队利益是一个重要的设计挑战。
+Careful design of the reward function is key to successful reinforcement learning. It needs to accurately reflect the true objectives of the game while guiding the AI to learn correct strategies. Particularly in "Ding Ge Dan", balancing individual interests and team interests is an important design challenge.
 
-### 3. 残局推演：带换牌模拟的蒙特卡洛树搜索
+### 3. Endgame Deduction: Monte Carlo Tree Search with Exchange Simulation
 
-在游戏后期（如某方只剩不到10张牌），神经网络的直觉可能不够精确，需要搜索算法介入。这时候，传统的经验法则不再可靠，需要通过精确的计算来找到最优策略。
+In the late game (when a side has fewer than 10 cards), neural network intuition may not be precise enough, requiring search algorithm intervention. At this point, traditional empirical rules are no longer reliable, and optimal strategies need to be found through precise calculation.
 
-#### 算法选择
+#### Algorithm Selection
 
-采用信息集蒙特卡洛树搜索（ISMCTS）。这是一种专门针对不完全信息博弈设计的搜索算法，能够处理对手手牌未知的情况。
+Adopts Information Set Monte Carlo Tree Search (ISMCTS). This is a search algorithm specifically designed for incomplete information games, capable of handling situations where opponents' hands are unknown.
 
-#### 特殊改进
+#### Special Improvements
 
-在传统的"确定性抽样"（随机猜测对手手牌）基础上，必须加入"对手换牌模拟"。这是"定个蛋"特有的挑战。AI在推演时需要假设："如果对手手里有2个'4'，他极大概率会把那对散牌换成炸弹"。通过这种带有换牌逻辑的平行宇宙模拟，AI能更准确地算出残局的胜率，避免被对手突然的"换牌凑炸"反杀。
+Building on traditional "deterministic sampling" (randomly guessing opponents' hands), must add "opponent exchange simulation". This is a unique challenge in "Ding Ge Dan". During deduction, the AI needs to assume: "If the opponent has 2 '4's, they will very likely convert that scattered pair into a bomb". Through parallel universe simulations incorporating exchange logic, the AI can more accurately calculate endgame win rates, avoiding being counter-attacked by opponents' sudden "exchange-to-bomb" moves.
 
-这种改进使得搜索算法能够更好地应对"定个蛋"的动态特性。传统的扑克AI只需要考虑对手可能持有的牌，而"定个蛋"AI还需要考虑对手可能通过换牌形成的新牌型，这大大增加了搜索空间的复杂度。
+This improvement enables the search algorithm to better handle the dynamic nature of "Ding Ge Dan". Traditional poker AIs only need to consider cards opponents might hold, while "Ding Ge Dan" AI also needs to consider new combinations opponents might form through exchanges, greatly increasing search space complexity.
 
-#### 工作流程
+#### Workflow
 
-搜索过程分为几个阶段：首先是选择阶段，从根节点开始沿着树向下选择最有希望的分支；然后是扩展阶段，在叶子节点添加新的子节点；接着是模拟阶段，从新节点开始进行随机模拟直到游戏结束；最后是反向传播阶段，将模拟结果向上传播更新节点的统计信息。
+The search process consists of several phases: First, the selection phase, choosing the most promising branches from the root node down the tree; then the expansion phase, adding new child nodes at leaf nodes; followed by the simulation phase, conducting random simulations from new nodes until game end; finally, the backpropagation phase, propagating simulation results upward to update node statistics.
 
-在每次模拟中，都会随机采样对手的可能手牌，并模拟对手可能的换牌行为。通过大量的模拟，算法能够建立起对各种局面胜率的估计，从而选择最优的行动方案。
+In each simulation, possible opponent hands are randomly sampled, and possible opponent exchange behaviors are simulated. Through extensive simulations, the algorithm builds estimates of win rates for various situations, thereby selecting optimal action plans.
 
-### 4. 定制化的特征工程
+### 4. Customized Feature Engineering
 
-神经网络的"常识"需要被重新定义，以适配"定个蛋"的反直觉规则。传统的扑克AI特征工程方法在这里并不完全适用，需要进行针对性的调整。
+The neural network's "common sense" needs to be redefined to adapt to "Ding Ge Dan"'s counter-intuitive rules. Traditional poker AI feature engineering methods are not entirely applicable here and require targeted adjustments.
 
-#### 牌力重估
+#### Card Power Reassessment
 
-传统扑克中4张王是无敌的，但在"定个蛋"中四王炸并非最大。特征工程必须通过权重调整，让神经网络深刻理解"3张为炸、4张为浑"的压制关系。这需要重新设计牌力评估体系，不能简单地沿用传统扑克的经验。
+In traditional poker, 4 Jokers are invincible, but in "Ding Ge Dan", quadruple Joker bombs are not the strongest. Feature engineering must adjust weights to help the neural network deeply understand the suppression relationship of "3 cards as bomb, 4 cards as Hun". This requires redesigning the card power evaluation system, not simply following traditional poker experience.
 
-特别需要注意的是，"3"在"定个蛋"中是最大的数字牌，这与大多数扑克游戏完全不同。特征工程必须明确编码这一规则，否则AI会在训练中产生严重的困惑。
+Particularly noteworthy is that "3" is the largest numbered card in "Ding Ge Dan", completely different from most poker games. Feature engineering must explicitly encode this rule, otherwise the AI will experience serious confusion during training.
 
-#### 动作掩码技术
+#### Action Masking Technology
 
-在输出层严格屏蔽不符合"定个蛋"规则的出牌（例如不符合换取规则的换牌操作），大幅缩小AI的无效搜索空间。这不仅提高了学习效率，也确保了AI的行为始终符合游戏规则。
+Strictly mask plays that don't comply with "Ding Ge Dan" rules at the output layer (such as exchange operations that don't meet exchange rules), significantly reducing the AI's invalid search space. This not only improves learning efficiency but also ensures AI behavior always complies with game rules.
 
-动作掩码的实现需要考虑多种约束条件：当前是否可以换牌、换牌的合法性、出牌是否符合当前轮次的要求等。通过提前排除非法动作，可以让AI将有限的学习能力集中在有效的策略空间上。
+Action masking implementation needs to consider multiple constraint conditions: whether exchanges are currently possible, exchange legality, whether plays meet current round requirements, etc. By eliminating illegal actions in advance, the AI can focus its limited learning capacity on effective strategy spaces.
 
-#### 关键特征向量设计
+#### Key Feature Vector Design
 
-特征向量包含多个维度的信息：
+Feature vectors contain information from multiple dimensions:
 
-**基础手牌特征**：各点数牌的数量分布，这反映了手牌的基本结构。
+**Basic Hand Features**: Distribution of cards by rank, reflecting basic hand structure.
 
-**4的数量和分布特征**：手中"4"的数量以及它们的组合潜力。这是"定个蛋"最核心的特征之一。
+**Quantity and Distribution Features of 4s**: Number of "4"s in hand and their combination potential. This is one of the most core features in "Ding Ge Dan".
 
-**换牌潜力特征**：基于当前手牌结构和上家出牌情况，计算可以进行的有效换牌数量和类型。
+**Exchange Potential Features**: Based on current hand structure and previous player's play, calculates the number and types of valid exchanges possible.
 
-**团队状态特征**：队友剩余牌数、队友是否处于优势位置等信息。这对于学习团队协作至关重要。
+**Team Status Features**: Teammate's remaining cards, whether teammate is in advantageous position, etc. This is crucial for learning team collaboration.
 
-**对手威胁特征**：对手剩余牌数、对手可能的牌型强度等。这帮助AI评估当前局势的危险程度。
+**Opponent Threat Features**: Opponent's remaining cards, possible combination strength, etc. This helps AI assess current situation danger level.
 
-**出牌历史特征**：最近几轮的出牌记录，这包含了丰富的策略信息。
+**Play History Features**: Records of recent rounds' plays, containing rich strategic information.
 
-**当前局势特征**：是否是首轮出牌、当前需要压制的牌型等上下文信息。
+**Current Situation Features**: Whether it's the first play, what combination needs to be beaten, and other contextual information.
 
-这些特征的精心设计和组合，构成了AI理解"定个蛋"游戏的基础。好的特征工程能够让AI更快地学习到有效的策略，减少训练时间和计算资源的需求。
+Careful design and combination of these features form the foundation for AI understanding of "Ding Ge Dan". Good feature engineering enables AI to learn effective strategies faster, reducing training time and computational resource requirements.
 
-## 技术实现路线图
+## Technical Implementation Roadmap
 
-### 第一阶段：基础框架构建（预计2-3周）
+### Phase 1: Basic Framework Construction (Estimated 2-3 weeks)
 
-**实现"定个蛋"游戏的完整规则引擎**
+**Implement Complete Rule Engine for "Ding Ge Dan"**
 
-这是整个项目的基础。需要实现牌型识别与验证系统，确保能够准确判断各种牌型的合法性；实现换牌规则，包括触发条件检查、换牌公式应用、换牌后的状态更新等；实现胜负判定逻辑，正确处理双扣、单扣、平局等各种情况；实现接风机制，确保出牌权的正确转移。
+This is the foundation of the entire project. Need to implement card combination recognition and validation system to ensure accurate judgment of various combination legality; implement exchange rules including trigger condition checking, exchange formula application, state updates after exchanges; implement win/loss determination logic to correctly handle double capture, single capture, draws, and other situations; implement wind catching mechanism to ensure correct transfer of playing rights.
 
-**构建换牌优化器的基础算法**
+**Build Basic Algorithms for Card Exchange Optimizer**
 
-实现动态规划求解器，能够在合理时间内找到最优的换牌方案；设计手牌价值评估函数，能够量化评估不同手牌结构的优劣；开发换牌决策模块，整合优化器和评估函数，形成完整的换牌决策流程。
+Implement dynamic programming solver capable of finding optimal exchange solutions within reasonable time; design hand value evaluation function to quantify and evaluate different hand structures; develop exchange decision module integrating optimizer and evaluation function to form complete exchange decision workflow.
 
-**设计状态表示和动作空间**
+**Design State Representation and Action Space**
 
-完成特征工程设计，确定需要提取哪些特征以及如何编码；设计动作编码方案，将游戏中的各种可能行动转换为机器可处理的格式；实现动作掩码机制，确保AI只考虑合法的行动选项。
+Complete feature engineering design, determining which features to extract and how to encode them; design action encoding scheme to convert various possible game actions into machine-processable formats; implement action masking mechanism to ensure AI only considers legal action options.
 
-### 第二阶段：强化学习训练（预计4-6周）
+### Phase 2: Reinforcement Learning Training (Estimated 4-6 weeks)
 
-**搭建MAPPO/QMIX训练环境**
+**Set Up MAPPO/QMIX Training Environment**
 
-封装多智能体环境，提供标准的接口供强化学习算法调用；实现奖励函数，准确反映游戏的目标和策略偏好；建立并行训练框架，提高训练效率。
+Encapsulate multi-agent environment providing standard interfaces for reinforcement learning algorithm calls; implement reward functions accurately reflecting game objectives and strategy preferences; establish parallel training framework to improve training efficiency.
 
-**实现自我对战机制**
+**Implement Self-Play Mechanism**
 
-设计Self-Play循环，让AI通过与自己对战来不断提升；建立经验回放缓冲区，存储历史对局数据用于训练；管理对手池，保持对手的多样性以避免过拟合。
+Design Self-Play loop allowing AI to continuously improve through playing against itself; establish experience replay buffer storing historical match data for training; manage opponent pool maintaining opponent diversity to avoid overfitting.
 
-**训练初步的策略网络**
+**Train Preliminary Strategy Network**
 
-搭建Actor-Critic网络架构，这是MAPPO算法的核心组件；进行超参数调优，找到最适合"定个蛋"的训练参数；监控收敛性，确保训练过程稳定有效。
+Build Actor-Critic network architecture, the core component of MAPPO algorithm; perform hyperparameter tuning to find training parameters most suitable for "Ding Ge Dan"; monitor convergence to ensure stable and effective training process.
 
-### 第三阶段：高级功能集成（预计3-4周）
+### Phase 3: Advanced Feature Integration (Estimated 3-4 weeks)
 
-**集成ISMCTS残局推演模块**
+**Integrate ISMCTS Endgame Deduction Module**
 
-实现换牌模拟器，能够在搜索过程中模拟对手的换牌行为；将MCTS与神经网络融合，结合两者的优势；设计时间控制策略，确保在有限时间内完成搜索。
+Implement exchange simulator capable of simulating opponent exchange behavior during search; merge MCTS with neural networks combining advantages of both; design time control strategy ensuring search completion within limited time.
 
-**优化特征工程和奖励函数**
+**Optimize Feature Engineering and Reward Functions**
 
-进行特征重要性分析，识别哪些特征对性能影响最大；实施奖励塑形技术，通过中间奖励引导AI学习；采用课程学习策略，从简单场景逐步过渡到复杂场景。
+Conduct feature importance analysis identifying which features have greatest impact on performance; implement reward shaping techniques guiding AI learning through intermediate rewards; adopt curriculum learning strategy gradually transitioning from simple to complex scenarios.
 
-**进行大规模训练和调优**
+**Conduct Large-Scale Training and Tuning**
 
-部署分布式训练系统，加速训练过程；尝试模型集成技术，结合多个模型的优势；进行对抗性测试，发现并修复策略漏洞。
+Deploy distributed training system to accelerate training process; try model ensemble techniques combining advantages of multiple models; conduct adversarial testing to discover and fix strategy vulnerabilities.
 
-### 第四阶段：性能优化与部署（预计2-3周）
+### Phase 4: Performance Optimization and Deployment (Estimated 2-3 weeks)
 
-**模型压缩和加速**
+**Model Compression and Acceleration**
 
-实施量化感知训练，减少模型大小同时保持精度；应用知识蒸馏技术，将大模型的知识转移到小模型；导出ONNX格式，便于在不同平台上部署。
+Implement quantization-aware training reducing model size while maintaining precision; apply knowledge distillation technique transferring large model knowledge to small models; export ONNX format for deployment on different platforms.
 
-**实时决策优化**
+**Real-Time Decision Optimization**
 
-优化推理速度，确保决策时间在可接受范围内；设计缓存策略，避免重复计算；实现异步决策机制，提高响应速度。
+Optimize inference speed ensuring decision time within acceptable range; design caching strategy avoiding redundant calculations; implement asynchronous decision mechanism improving response speed.
 
-**部署测试和迭代**
+**Deployment Testing and Iteration**
 
-与人类玩家进行对战测试，收集真实反馈；进行性能基准测试，量化评估系统表现；根据测试结果持续改进，形成良性循环。
+Conduct battle testing with human players collecting real feedback; perform performance benchmark testing quantitatively evaluating system performance; continuously improve based on test results forming virtuous cycle.
 
-## 技术挑战与解决方案
+## Technical Challenges and Solutions
 
-### 挑战1：动态动作空间爆炸
+### Challenge 1: Dynamic Action Space Explosion
 
-**问题描述**：换牌机制导致动作空间呈指数级增长。假设有n张4，每张4可以选择换或不换，还要考虑换哪种牌型，动作空间可能达到数千甚至上万种组合。这使得传统的强化学习方法难以直接应用。
+**Problem Description**: Exchange mechanism causes exponential growth in action space. Assuming n cards of 4, each 4 can choose to exchange or not, plus considering which combination to exchange for, action space may reach thousands or even tens of thousands of combinations. This makes traditional reinforcement learning methods difficult to apply directly.
 
-**解决方案**：
+**Solutions**:
 
-**启发式预筛选**：不是考虑所有可能的换牌方案，而是只保留那些有价值的选项。例如，只考虑能形成炸弹或强力牌型的换牌，忽略那些只会产生弱牌型的换牌。这样可以大幅减少需要评估的动作数量。
+**Heuristic Pre-screening**: Instead of considering all possible exchange scenarios, only retain valuable options. For example, only consider exchanges that can form bombs or powerful combinations, ignoring those producing weak combinations. This can significantly reduce the number of actions needing evaluation.
 
-**分层决策**：将复杂的决策分解为多个层次。第一层决定是否换牌（这是一个简单的二分类问题）；第二层决定如果用几张4换（这是一个离散选择问题）；第三层才考虑换取哪种牌型（仅在必要时展开）。这种分层方法可以将一个巨大的动作空间分解为多个较小的子问题。
+**Hierarchical Decision-Making**: Decompose complex decisions into multiple levels. First level decides whether to exchange (a simple binary classification problem); second level decides how many 4s to use if exchanging (a discrete selection problem); third level considers which combination to exchange for (only expanded when necessary). This hierarchical method can decompose one huge action space into multiple smaller sub-problems.
 
-**动作掩码技术**：在神经网络输出层直接屏蔽非法动作，减少无效探索，加速收敛。这不仅提高了学习效率，也确保了AI的行为始终符合游戏规则。
+**Action Masking Technology**: Directly mask illegal actions at neural network output layer, reducing无效 exploration and accelerating convergence. This not only improves learning efficiency but also ensures AI behavior always complies with game rules.
 
-### 挑战2：非对称团队协作
+### Challenge 2: Asymmetric Team Collaboration
 
-**问题描述**：换牌规则规定"不能换同队的牌"，这意味着AI需要通过隐式通信来协调行动。如何让AI学会"故意不打某些牌"来给队友创造换牌机会？这是一个高级的协作策略问题。
+**Problem Description**: Exchange rules stipulate "cannot exchange teammate's cards", meaning AI needs to coordinate actions through implicit communication. How to teach AI to "deliberately not play certain cards" to create exchange opportunities for teammates? This is an advanced collaboration strategy problem.
 
-**解决方案**：
+**Solutions**:
 
-**在状态空间中编码队友的潜在换牌能力**：基于已出牌的信息，推断队友手中可能有多少个"4"。如果估计队友可能有足够的"4"进行换牌，那么当前玩家就应该考虑留出换牌机会，比如故意打出容易被换走的牌型。
+**Encode Teammate's Potential Exchange Capability in State Space**: Based on played card information, infer how many "4"s teammate might have. If estimating teammate might have enough "4"s for exchange, current player should consider leaving exchange opportunities, such as deliberately playing easily exchangeable combinations.
 
-**通过出牌模式传递信号**：故意打出特定的3张牌型，暗示队友可以用2张4换走。在队友剩牌少时，主动放弃出牌权，让队友有机会清牌。这种隐式通信不需要显式的协议，而是通过学习形成的默契。
+**Transmit Signals Through Playing Patterns**: Deliberately play specific 3-card combinations suggesting teammate can exchange with 2 fours. When teammate has few cards remaining, actively give up playing rights allowing teammate opportunity to clear cards. This implicit communication doesn't require explicit protocols but forms tacit understanding through learning.
 
-**使用注意力机制学习队友行为模式**：引入注意力机制，让AI能够关注队友状态中的关键信息。通过学习，AI可以发现哪些队友特征与有效的协作策略相关，从而更好地预测队友的行为并做出相应的配合。
+**Use Attention Mechanisms to Learn Teammate Behavior Patterns**: Introduce attention mechanisms enabling AI to focus on key information in teammate status. Through learning, AI can discover which teammate features correlate with effective collaboration strategies, thereby better predicting teammate behavior and making corresponding cooperation.
 
-**引入合作奖励**：当队友因为你的出牌而获益时，给予额外奖励。这鼓励AI采取"牺牲小我，成就大我"的策略，而不是只顾自己的利益。这种奖励设计对于培养真正的团队协作精神至关重要。
+**Introduce Cooperation Rewards**: Give additional rewards when teammate benefits from your plays. This encourages AI to adopt "sacrifice self for greater good" strategies rather than focusing only on personal interests. This reward design is crucial for cultivating genuine team collaboration spirit.
 
-### 挑战3：反直觉规则学习
+### Challenge 3: Counter-Intuitive Rule Learning
 
-**问题描述**：传统扑克经验不适用，如"3是最大的单牌"、"四王炸不是最大的"。如果直接使用通用扑克AI的预训练模型，会产生严重的负迁移，即之前学到的知识反而会妨碍新任务的学习。
+**Problem Description**: Traditional poker experience doesn't apply, such as "3 is the largest single card", "quadruple Joker bombs aren't the strongest". If directly using pre-trained models from general poker AIs, serious negative transfer occurs, meaning previously learned knowledge actually hinders new task learning.
 
-**解决方案**：
+**Solutions**:
 
-**在特征工程中显式编码规则知识**：不使用传统的牌面大小排序，而是使用"定个蛋"专用的牌力评估体系。明确告诉AI在这个游戏中"3"是最大的数字牌，"4"是最小的，并且具有特殊的换牌功能。
+**Explicitly Encode Rule Knowledge in Feature Engineering**: Don't use traditional card rank ordering, but use "Ding Ge Dan" specific card power evaluation system. Explicitly tell AI that in this game "3" is the largest numbered card, "4" is the smallest, and has special exchange functionality.
 
-**使用课程学习，从简单场景开始训练**：第一阶段只训练基本出牌，不涉及换牌机制；第二阶段加入简单的换牌场景；第三阶段才进入完整规则下的复杂对局。这种渐进式的学习方式可以让AI逐步适应游戏的复杂性。
+**Use Curriculum Learning Starting from Simple Scenarios**: First phase trains only basic playing without exchange mechanism; second phase adds simple exchange scenarios; third phase enters complex matches under complete rules. This progressive learning approach allows AI to gradually adapt to game complexity.
 
-**加入规则约束的损失函数**：在训练过程中，如果AI违反了游戏规则（比如认为四王炸是最大的），就在损失函数中加入额外的惩罚项。这样可以强制AI快速纠正错误的认知。
+**Add Rule-Constrained Loss Functions**: During training, if AI violates game rules (such as thinking quadruple Joker bombs are strongest), add extra penalty terms to loss function. This forces AI to quickly correct wrong cognitions.
 
-**从零开始训练，不使用预训练模型**：避免负迁移的影响，让AI完全适应"定个蛋"的独特规则。虽然这样可能需要更多的训练时间，但最终得到的模型会更加纯粹和有效。
+**Train from Scratch Without Pre-trained Models**: Avoid negative transfer effects, letting AI completely adapt to "Ding Ge Dan"'s unique rules. Although this may require more training time, the final model will be purer and more effective.
 
-## 预期效果与评估指标
+## Expected Effects and Evaluation Metrics
 
-### 性能指标
+### Performance Metrics
 
-**胜率指标**：
+**Win Rate Metrics**:
 
-- 对比初级人类玩家：目标胜率超过80%
-- 对比中级人类玩家：目标胜率超过60%
-- 对比高级人类玩家：目标胜率超过45%
+- Against beginner human players: Target win rate over 80%
+- Against intermediate human players: Target win rate over 60%
+- Against advanced human players: Target win rate over 45%
 
-这些目标反映了AI应该达到的水平：能够轻松击败新手，稳定战胜中等水平玩家，并与高手有一战之力。
+These targets reflect the level AI should achieve: easily defeating novices, steadily beating intermediate players, and being competitive with experts.
 
-**决策效率**：
+**Decision Efficiency**:
 
-- 平均决策时间小于1秒
-- 换牌决策时间小于200毫秒
-- 残局搜索深度可达10-15步
+- Average decision time less than 1 second
+- Exchange decision time less than 200 milliseconds
+- Endgame search depth reaching 10-15 steps
 
-快速的决策对于良好的用户体验至关重要。玩家不应该因为等待AI思考而感到沮丧。
+Fast decisions are crucial for good user experience. Players shouldn't feel frustrated waiting for AI to think.
 
-**换牌效率**：
+**Exchange Efficiency**:
 
-- 换牌成功率超过70%
-- 换牌后胜率提升平均超过15%
-- "4"的使用效率：平均每局有效使用2-3次
+- Exchange success rate over 70%
+- Win rate improvement after exchange averaging over 15%
+- "4" usage efficiency: effectively using 2-3 times per game on average
 
-这些指标专门针对"定个蛋"的核心机制——换牌。高效的换牌策略是区分普通AI和优秀AI的关键。
+These metrics specifically target "Ding Ge Dan"'s core mechanism—card exchange. Efficient exchange strategy is key to distinguishing ordinary AI from excellent AI.
 
-### 评估方法
+### Evaluation Methods
 
-**与不同水平的人类玩家对战**：招募50名不同水平的玩家，每人与AI对战100局，收集胜率和主观评价。这种真人测试能够提供最真实的性能评估。
+**Battle Against Human Players of Different Levels**: Recruit 50 players of varying levels, each playing 100 games against AI, collecting win rates and subjective evaluations. This real-person testing provides the most authentic performance assessment.
 
-**与其他基准AI算法对比**：与DouZero（斗地主AI）、DeepStack（德州扑克AI）、随机策略基线、规则基线AI等进行对比实验。这有助于了解"定个蛋"AI在扑克AI领域的相对水平。
+**Comparison with Other Benchmark AI Algorithms**: Conduct comparative experiments with DouZero (Dou Dizhu AI), DeepStack (Texas Hold'em AI), random strategy baselines, rule-based baseline AIs, etc. This helps understand "Ding Ge Dan" AI's relative level in the poker AI field.
 
-**A/B测试不同算法组件的效果**：分别测试有/无换牌优化器、有/无ISMCTS残局推演、不同奖励函数的影响。通过这种消融实验，可以了解各个组件的贡献度，指导后续的优化方向。
+**A/B Testing Different Algorithm Component Effects**: Separately test with/without exchange optimizer, with/without ISMCTS endgame deduction, impact of different reward functions. Through such ablation experiments, understand each component's contribution, guiding subsequent optimization directions.
 
-### 消融实验设计
+### Ablation Experiment Design
 
-设计多个实验配置来评估不同组件的作用：
+Design multiple experiment configurations to evaluate different components' roles:
 
-- **完整系统**：包含换牌优化器、MAPPO和ISMCTS所有组件
-- **无换牌优化**：只使用MAPPO和ISMCTS，评估换牌优化器的贡献
-- **无残局推演**：只使用换牌优化器和MAPPO，评估ISMCTS的价值
-- **仅规则基线**：只使用基于规则的AI，作为最低性能的参考
+- **Complete System**: Including all components—exchange optimizer, MAPPO, and ISMCTS
+- **Without Exchange Optimization**: Only using MAPPO and ISMCTS, evaluating exchange optimizer's contribution
+- **Without Endgame Deduction**: Only using exchange optimizer and MAPPO, evaluating ISMCTS value
+- **Rule Baseline Only**: Only using rule-based AI as minimum performance reference
 
-通过比较这些配置的performance，可以量化每个组件对整体性能的贡献，为资源分配和优化重点提供依据。
+By comparing these configurations' performance, quantify each component's contribution to overall performance, providing basis for resource allocation and optimization priorities.
 
-## 未来扩展方向
+## Future Expansion Directions
 
-### 1. 在线学习能力
+### 1. Online Learning Capability
 
-实现实时从人类对局中学习的能力。目前的系统主要依靠离线训练，如果能够在线学习，就可以根据每个对手的特点动态调整策略。建立个人化的对手模型，记录每个玩家的出牌习惯和风格，针对性地制定对策。
+Implement ability to learn in real-time from human matches. Current system mainly relies on offline training; if online learning were possible, strategies could dynamically adjust based on each opponent's characteristics. Build personalized opponent models recording each player's playing habits and styles, developing targeted counter-strategies.
 
-### 2. 解释性增强
+### 2. Enhanced Explainability
 
-可视化AI的决策过程，让玩家能够理解AI为什么做出某个选择。解释为什么选择某个换牌方案，是基于什么样的考量。提供教学模式的AI助手，不仅陪玩家玩游戏，还能给出建议和指导，帮助玩家提高水平。
+Visualize AI's decision process, allowing players to understand why AI made certain choices. Explain why particular exchange方案 was chosen, based on what considerations. Provide teaching mode AI assistant, not just playing with players but also giving suggestions and guidance, helping players improve their level.
 
-### 3. 多平台部署
+### 3. Multi-Platform Deployment
 
-开发Web端实时对战平台，让更多玩家能够方便地与AI对战或观看AI之间的对决。开发移动端App，让玩家随时随地都能体验"定个蛋"。推出离线单机版，满足没有网络连接时的娱乐需求。
+Develop web-based real-time battle platform allowing more players to conveniently battle AI or watch AI versus AI matches. Develop mobile App allowing players to experience "Ding Ge Dan" anytime, anywhere. Launch offline single-player version satisfying entertainment needs without internet connection.
 
-### 4. 扩展到其他地方扑克游戏
+### 4. Expand to Other Local Poker Games
 
-将这套架构迁移到其他具有特殊规则的扑克游戏。中国各地有很多特色的地方扑克游戏，它们往往都有独特的规则和玩法。建立一个通用的"地方扑克AI框架"，可以快速适配不同的游戏规则，降低开发成本。
+Migrate this architecture to other poker games with special rules. China has many distinctive local poker games across regions, often with unique rules and gameplay. Establish a universal "local poker AI framework" that can quickly adapt to different game rules, reducing development costs.
 
-## 结论
+## Conclusion
 
-"定个蛋"AI的开发是一个极具挑战性的任务，它要求AI具备三大核心能力：
+Developing "Ding Ge Dan" AI is an extremely challenging task requiring AI to possess three core capabilities:
 
-**资源动态重组能力**：通过换牌优化器实时重构手牌，在毫秒级内解决复杂的组合优化问题。这不仅仅是简单的牌型识别，而是要在瞬息万变的局势中找到最优的资源配置方案。
+**Dynamic Resource Reorganization Capability**: Real-time hand reconstruction through exchange optimizer, solving complex combinatorial optimization problems within milliseconds. This isn't just simple combination recognition, but finding optimal resource allocation schemes in rapidly changing situations.
 
-**团队默契理解**：在多智能体环境中实现有效协作，学会隐式通信和战术配合。这需要AI不仅要考虑自己的利益，还要考虑团队的整體利益，甚至在必要时做出牺牲。
+**Team Tacit Understanding**: Achieving effective collaboration in multi-agent environments, learning implicit communication and tactical coordination. This requires AI to consider not only personal interests but also overall team interests, even making sacrifices when necessary.
 
-**规则适应能力**：快速学习并适应反直觉的游戏规则，摆脱传统扑克经验的束缚。这要求AI具备强大的学习能力，能够从大量对局中总结出适合"定个蛋"的策略规律。
+**Rule Adaptation Capability**: Quickly learning and adapting to counter-intuitive game rules, breaking free from traditional poker experience constraints. This requires AI to have strong learning capability, summarizing strategy patterns suitable for "Ding Ge Dan" from大量 matches.
 
-通过融合组合优化、多智能体强化学习和蒙特卡洛树搜索等技术，我们有望开发出能够真正理解"定个蛋"精髓的AI系统。这个系统不仅能在游戏中取得优异表现，还能为其他具有类似复杂机制的游戏AI开发提供宝贵的经验和技术积累。
+By integrating combinatorial optimization, multi-agent reinforcement learning, and Monte Carlo Tree Search technologies, we hope to develop an AI system that truly understands the essence of "Ding Ge Dan". This system will not only achieve excellent performance in games but also provide valuable experience and technical accumulation for developing AIs for other games with similar complex mechanisms.
 
-更重要的是，这个项目展示了如何将传统AI技术（如动态规划、蒙特卡洛搜索）与现代深度学习方法（如多智能体强化学习）有机结合，为解决现实世界中复杂的决策问题提供了新的思路和方法论。
+More importantly, this project demonstrates how to organically combine traditional AI technologies (such as dynamic programming, Monte Carlo search) with modern deep learning methods (such as multi-agent reinforcement learning), providing new ideas and methodologies for solving complex decision-making problems in the real world.
 
-"定个蛋"作为一个具有独特机制的地方扑克游戏，为AI研究提供了一个绝佳的试验场。它的换牌机制引入了动态资源重组的概念，它的团队对抗特性考验了多智能体协作能力，它的反直觉规则挑战了传统的学习范式。成功开发"定个蛋"AI，不仅能够为玩家带来更好的游戏体验，也能够推动AI技术在博弈论、强化学习、组合优化等领域的发展。
+As a local poker game with unique mechanisms, "Ding Ge Dan" provides an excellent testing ground for AI research. Its exchange mechanism introduces the concept of dynamic resource reorganization, its team competition characteristics test multi-agent collaboration capabilities, and its counter-intuitive rules challenge traditional learning paradigms. Successfully developing "Ding Ge Dan" AI will not only bring better gaming experiences to players but also promote AI technology development in fields like game theory, reinforcement learning, and combinatorial optimization.
 
-## 参考文献
+## References
 
 1. Zha, D., et al. (2021). "DouZero: Mastering Dou Dizhu with Self-Play Deep Reinforcement Learning." *arXiv preprint arXiv:2105.13240*
 
@@ -384,9 +384,9 @@
 
 ---
 
-**作者注**：本文介绍的算法方案目前处于设计阶段，具体的实现将在后续文章中逐步展开。如果您对"定个蛋"AI项目感兴趣，欢迎留言讨论或参与开源贡献！
+**Author's Note**: The algorithm solution introduced in this article is currently in the design phase, with specific implementations to be gradually展开 in subsequent articles. If you're interested in the "Ding Ge Dan" AI project, feel free to leave comments for discussion or participate in open-source contributions!
 
-**更新日期**：2026年11月20日
+**Last Updated**: November 20, 2026
 
 ---
 

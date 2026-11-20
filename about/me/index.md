@@ -1,160 +1,141 @@
 # About Me
 
 
-## 过往项目
+## Past Projects
 {{< accordion name="projects" >}}
 
-{{< details summary="药片CAD设计系统" >}}
+{{< details summary="Pill CAD Design System" >}}
 
 {{< figure src="/projects/digitalCast-2026-05-19_17-14-31.919_logo.png" >}}
 
-### 项目简介
+### Project Overview
 
-基于C++ Qt的药片CAD设计系统
+C++ Qt-based pill CAD design system
 
-### 主要功能
+### Key Features
 
-- 药片参数化设计
-- 尺寸标注
-- 图纸自动生成
-- 药片三维模型生成
+- Parametric pill design
+- Dimension annotation
+- Automatic drawing generation
+- 3D pill model generation
 
-### 技术栈
+### Tech Stack
 
 - C++
 - Qt
 
-### 项目亮点
+### Highlights
 
-1. 参数化快速设计修改，生成模型，出图
-2. 直观的参数标注
+1. Parametric rapid design modification, model generation, and drawing output
+2. Intuitive parameter annotation
 
 {{< /details >}}
 
-{{< details summary="嵌入式设备控制操作平台" >}}
+{{< details summary="Embedded Device Control Platform" >}}
 
 {{< figure src="/projects/pre1_logo (5).png" >}}
 {{< figure src="/projects/pre2_logo (4).png" >}}
 
-### 技术栈
+### Tech Stack
 
 - C++
 - Qt
 
 {{< /details >}}
 
-{{< details summary="前端模型显示" >}}
+{{< details summary="Frontend Model Display" >}}
 
 {{< model3d src="/model3d/Knife.glb" ratio="1.7778" grid="true" back_light="true" >}}
 
-### 项目简介
+### Project Overview
 
-基于 Three.js 的 3D 模型在线展示平台，支持 GLTF/GLB 格式。
+Three.js-based 3D model online display platform, supporting GLTF/GLB formats.
 
-### 核心特性
+### Core Features
 
-- 🎯 交互式 3D 模型查看器
-- 💡 动态光照系统
-- 🎬 动画播放控制
-- 📐 测量工具集成
+- 🎯 Interactive 3D model viewer
+- 💡 Dynamic lighting system
+- 🎬 Animation playback control
+- 📐 Measurement tools integration
 
-### 技术实现
+### Technical Implementation
 
 - Three.js + WebGL
 - GLTFLoader + DRACOLoader
-- OrbitControls 交互控制
-- 自定义着色器效果
+- OrbitControls interaction
+- Custom shader effects
 
-### 应用场景
+### Application Scenarios
 
-- 产品展示
-- 教育培训
-- 工业设计预览
+- Product showcase
+- Education and training
+- Industrial design preview
 
 {{< /details >}}
 
-{{< details summary="可视化脚手架设计系统" >}}
+{{< details summary="Visual Scaffolding Design System" >}}
 
 {{< figure src="/projects/jsj.png" >}}
 
-<!--
-### 视频教程
+### Project Overview
 
-{{< bilibili BV1example >}}
+Frontend based on Threejs, backend supported by Golang.
 
--->
+### Features
 
-### 项目简介
+- Web access, no client deployment required
+- Permanent backend storage of design solutions
 
-基于前端Threejs，后端golang支持。
+### Technical Architecture
 
-### 功能特点
+- **Frontend**: Vue 3 + Vite + Threejs
+- **Backend**: Golang
+- **Database**: Postgresql
 
-- 网页访问，用户端不需要部署
-- 设计方案后端永久保存
-
-### 技术架构
-
-- **前端**：Vue 3 + Vite + Threejs
-- **后端**：golang
-- **数据库**：Postgresql
-
-<!--
-### 性能指标
-
-- 平均响应时间：< 2s
-- 并发处理能力：100+ QPS
-- 准确率：92%+
-
-### 相关链接
-
-- **在线体验**：[https://chatbot.example.com](https://chatbot.example.com)
-- **源码地址**：[GitHub Repository](https://github.com/yourusername/project3)
--->
 {{< /details >}}
 
-{{< details summary="多路摄像监控系统" >}}
+{{< details summary="Multi-Camera Surveillance System" >}}
 
 {{< figure src="/projects/pre1_logo (4).png" >}}
 
-### 项目简介
+### Project Overview
 
-基于C++，Qt，ffmpeg的多路摄像头监控系统
+Multi-camera surveillance system based on C++, Qt, and FFmpeg
 
-### 核心特性
+### Core Features
 
-- 同时获取多路摄像头视频流
-- 同时显示在界面上
-- 音视频同步
+- Simultaneous acquisition of multiple camera video streams
+- Display on interface simultaneously
+- Audio-video synchronization
 
-### 技术实现
+### Technical Implementation
 
 - C++
 - Qt
-- ffmpeg
+- FFmpeg
 
 {{< /details >}}
 
-{{< details summary="个人博客系统" >}}
+{{< details summary="Personal Blog System" >}}
 
-### 项目简介
+### Project Overview
 
-就是你现在看到的这个博客！基于 Hugo + FixIt 主题构建的静态网站。
+The blog you're seeing now! A static website built with Hugo + FixIt theme.
 
-### 特色功能
+### Features
 
-- ⚡ 极速加载（Lighthouse 99+ 分）
-- 🌓 自动深色模式切换
-- 🔍 全文搜索（Fuse.js）
-- 📱 完美响应式布局
-- 🌍 多语言支持
+- ⚡ Ultra-fast loading (Lighthouse 99+ score)
+- 🌓 Automatic dark mode switching
+- 🔍 Full-text search (Fuse.js)
+- 📱 Perfect responsive layout
+- 🌍 Multi-language support
 
-### 技术选型
+### Tech Stack
 
-- **静态生成器**：Hugo
-- **主题**：FixIt
-- **部署**：GitHub Pages + GitHub Actions
-- **CDN**：Cloudflare
+- **Static Generator**: Hugo
+- **Theme**: FixIt
+- **Deployment**: GitHub Pages + GitHub Actions
+- **CDN**: Cloudflare
 
 {{< /details >}}
 
@@ -162,26 +143,26 @@
 
 ---
 
-## 技能与专长
+## Skills & Expertise
 
-### 前端开发
+### Frontend Development
 
 - HTML/CSS/JavaScript
 - React/Vue/Angular
-- Three.js 3D 可视化
+- Three.js 3D Visualization
 - TypeScript
 
-### 后端开发
+### Backend Development
 
 - Node.js + Express
 - Python + FastAPI
 - Go
-- RESTful API 设计
+- RESTful API Design
 - C++
 - C#
 - Qt
 
-### 数据库
+### Database
 
 - PostgreSQL
 - MongoDB
@@ -189,19 +170,19 @@
 
 ### DevOps
 
-- Docker 容器化
-- CI/CD 自动化
-- Git 版本控制
-- Linux 服务器管理
+- Docker Containerization
+- CI/CD Automation
+- Git Version Control
+- Linux Server Management
 
 ---
 
-## 联系方式
+## Contact
 
 - 📧 Email: 0make(at)gmail.com
 - 💻 GitHub: [@0make](https://github.com/0make)
-- 🌐 个人网站: https://0make.top
-- 📱 社交媒体: [tiktok](https://tiktok.com/@alanzheng558)
+- 🌐 Personal Website: https://0make.top
+- 📱 Social Media: [tiktok](https://tiktok.com/@alanzheng558)
 
 ---
 
