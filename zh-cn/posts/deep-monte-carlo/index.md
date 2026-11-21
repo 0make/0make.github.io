@@ -117,7 +117,7 @@ DMC 的破解之道是：**用极致的算力换取海量的数据**。当自我
 
 **延伸阅读**：
 - [强化学习中的时序差分与蒙特卡洛方法对比](/posts/)
-- [不完全信息博弈的AI解决方案](/categories/artificial-intelligence/)
+- [不完全信息博弈的AI解决方案](/categories/ai/)
 
 ---
 

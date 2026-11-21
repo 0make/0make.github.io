@@ -162,7 +162,7 @@ After training is complete, DNN's forward propagation can be completed in millis
 
 **Further Reading**:
 - [Deep Monte-Carlo Algorithm (DMC) Principles](/posts/deep-monte-carlo/)
-- [Comparison of Temporal Difference and Monte Carlo Methods in Reinforcement Learning](/categories/artificial-intelligence/)
+- [Comparison of Temporal Difference and Monte Carlo Methods in Reinforcement Learning](/categories/ai/)
 - [Guide to Choosing Neural Network Activation Functions](/tags/deep-learning/)
 
 **References**:

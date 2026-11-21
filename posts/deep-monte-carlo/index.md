@@ -117,7 +117,7 @@ Compared to traditional MAPPO/QMIX algorithms, DMC is more suitable for handling
 
 **Further Reading**:
 - [Comparison of Temporal Difference and Monte Carlo Methods in Reinforcement Learning](/posts/)
-- [AI Solutions for Imperfect Information Games](/categories/artificial-intelligence/)
+- [AI Solutions for Imperfect Information Games](/categories/ai/)
 
 ---
 

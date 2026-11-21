@@ -162,7 +162,7 @@ $$w_{new} = w_{old} - \eta \cdot \frac{\partial L}{\partial w}$$
 
 **延伸阅读**：
 - [深度蒙特卡洛算法（DMC）原理解析](/posts/deep-monte-carlo/)
-- [强化学习中的时序差分与蒙特卡洛方法对比](/categories/artificial-intelligence/)
+- [强化学习中的时序差分与蒙特卡洛方法对比](/categories/ai/)
 - [神经网络激活函数的选择指南](/tags/deep-learning/)
 
 **参考资料**：
