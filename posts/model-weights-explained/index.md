@@ -1,26 +1,5 @@
-# 
+# What Exactly Is a Trained Model File? Demystifying AI's "Brain Memory Backup"
 
-## 英文版文章
-
-```markdown
----
-title: What Exactly Is a Trained Model File? Demystifying AI's "Brain Memory Backup"
-subtitle: A Complete Guide to Weights, Biases, and Neural Network Architecture
-date: 2026-11-27T00:00:00.000Z
-description: "Deep dive into the essence of deep learning model files, including weights, biases, network architecture, and optimizer states, with practical examples from Dinggedan AI"
-draft: false
-keywords:
-- model saving
-- weight parameters
-- neural network
-- PyTorch
-- TensorFlow
-tags:
-- AI
-- Deep Learning
-categories:
-- AI
----
 
 ## Introduction
 
@@ -96,7 +75,8 @@ Suppose you spent a week training a "Dinggedan" DMC model on a server and saved 
 
 If you open it with Python code, you'll see a structure like this:
 
-```python
+```
+python
 import torch
 
 # Load model file
@@ -116,6 +96,7 @@ for key, value in model_weights.items():
 # layer1.weight: shape=(128, 64), dtype=torch.float32
 # layer1.bias: shape=(128,), dtype=torch.float32
 # ...
+```
 
 ---
 
